@@ -7,6 +7,7 @@ import com.zachary.distribproxy.model.ProxyPool;
 import com.zachary.distribproxy.util.ClientRedisOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,12 @@ public class ProxyPoolConfig {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Bean
+    @ConditionalOnMissingBean(RedisTemplate.class)
+    RedisTemplate redisTemplate() {
+        return new RedisTemplate();
+    }
 
     /**
      * 加载YML格式自定义配置文件
